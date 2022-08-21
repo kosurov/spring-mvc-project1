@@ -1,7 +1,7 @@
 package com.github.kosurov.util;
 
-import com.github.kosurov.dao.PersonDAO;
 import com.github.kosurov.models.Person;
+import com.github.kosurov.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -10,11 +10,11 @@ import org.springframework.validation.Validator;
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonDAO personDAO;
+    private final PeopleService peopleService;
 
     @Autowired
-    public PersonValidator(PersonDAO personDAO) {
-        this.personDAO = personDAO;
+    public PersonValidator(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
 
-        if (personDAO.getPersonByName(person.getName()).isPresent()) {
+        if (peopleService.getPersonByName(person.getName()).isPresent()) {
             errors.rejectValue("name", "", "Person is already exists");
         }
     }

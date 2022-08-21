@@ -2,4 +2,4 @@ target
 *.iml
 .idea
 .DS_Store
-database.properties
+hibernate.properties

@@ -1,36 +1,47 @@
 package com.github.kosurov.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table(name = "book")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id")
     private int id;
 
-    private int personId;
-
+    @Column(name = "title")
     @NotEmpty(message = "Title should not be empty")
     @Size(min = 2, max = 100, message = "Author name should be between 2 and 100 characters")
     private String title;
 
+    @Column(name = "author")
     @NotEmpty(message = "Author name should not be empty")
     @Size(min = 2, max = 100, message = "Author name should be between 2 and 100 characters")
     private String author;
 
+    @Column(name = "year_of_writing")
     @Min(value = 0, message = "The year of writing should be valid")
     private int yearOfWriting;
+
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    private Person owner;
 
     public Book() {
 
     }
 
-    public Book(int id, int personId, String title, String author, int yearOfWriting) {
+    public Book(int id, String title, String author, int yearOfWriting, Person owner) {
         this.id = id;
-        this.personId = personId;
         this.title = title;
         this.author = author;
         this.yearOfWriting = yearOfWriting;
+        this.owner = owner;
     }
 
     public int getId() {
@@ -39,14 +50,6 @@ public class Book {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(int personId) {
-        this.personId = personId;
     }
 
     public String getTitle() {
@@ -71,5 +74,13 @@ public class Book {
 
     public void setYearOfWriting(int yearOfWriting) {
         this.yearOfWriting = yearOfWriting;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 }
