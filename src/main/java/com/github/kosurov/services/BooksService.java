@@ -5,6 +5,8 @@ import com.github.kosurov.models.Person;
 import com.github.kosurov.repositories.BooksRepository;
 import com.github.kosurov.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,10 @@ public class BooksService {
 
     public List<Book> findAll() {
         return booksRepository.findAll();
+    }
+
+    public Page<Book> findAll(Pageable pageable) {
+        return booksRepository.findAll(pageable);
     }
 
     public Book findById(int id) {
