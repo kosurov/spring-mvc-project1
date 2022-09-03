@@ -1,6 +1,5 @@
 package com.github.kosurov.controllers;
 
-import com.github.kosurov.dao.PersonDAO;
 import com.github.kosurov.models.Person;
 import com.github.kosurov.services.PeopleService;
 import com.github.kosurov.util.PersonValidator;

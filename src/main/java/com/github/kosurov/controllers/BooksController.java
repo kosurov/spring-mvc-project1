@@ -6,6 +6,7 @@ import com.github.kosurov.services.BooksService;
 import com.github.kosurov.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,14 +31,20 @@ public class BooksController {
     @GetMapping()
     public String index(Model model,
                         @RequestParam(name = "page", required = false) Integer page,
-                        @RequestParam(name = "books_per_page", required = false) Integer booksPerPage) {
+                        @RequestParam(name = "books_per_page", required = false) Integer booksPerPage,
+                        @RequestParam(name = "sort_by_year", required = false) Boolean sortByYear) {
 
         if (page != null && booksPerPage != null) {
-            // Получим страницу с книгами и передадим на отображение в представление
-            model.addAttribute("books", booksService.findAll(PageRequest.of(page, booksPerPage))
-                    .getContent());
+            if (sortByYear != null && sortByYear) {
+                model.addAttribute("books", booksService.findAll(PageRequest.of(page, booksPerPage,
+                                Sort.by("yearOfWriting"))).getContent());
+            } else {
+                model.addAttribute("books", booksService.findAll(PageRequest.of(page, booksPerPage))
+                        .getContent());
+            }
+        } else if (sortByYear != null && sortByYear) {
+            model.addAttribute("books", booksService.findAll(Sort.by("yearOfWriting")));
         } else {
-            // Получим книги и передадим на отображение в представление
             model.addAttribute("books", booksService.findAll());
         }
         return "books/index";
