@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,13 @@ public class BooksService {
 
     public Page<Book> findAll(Pageable pageable) {
         return booksRepository.findAll(pageable);
+    }
+
+    public List<Book> findBooksByTitleStartingWith(String searchRequest) {
+        if (searchRequest.isBlank()) {
+            return Collections.emptyList();
+        }
+        return booksRepository.findBooksByTitleStartingWith(searchRequest);
     }
 
     public Book findById(int id) {
