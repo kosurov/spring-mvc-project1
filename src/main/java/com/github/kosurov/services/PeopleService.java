@@ -52,6 +52,14 @@ public class PeopleService {
         Optional<Person> person = peopleRepository.findById(id);
         if (person.isPresent()) {
             Hibernate.initialize(person.get().getBooks());
+            for (Book book : person.get().getBooks()) {
+                if(book.getLendingTime() != null) {
+                    if(System.currentTimeMillis() - book.getLendingTime().getTime() >
+                    10 * 24 * 60 * 60 * 1000) {
+                        book.setExpired(true);
+                    }
+                }
+            }
             return person.get().getBooks();
         }
         return Collections.emptyList();

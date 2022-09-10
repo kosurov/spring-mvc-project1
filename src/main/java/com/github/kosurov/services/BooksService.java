@@ -11,6 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -73,6 +76,7 @@ public class BooksService {
         Optional<Person> owner = peopleRepository.findById(personId);
         if (book.isPresent() && owner.isPresent()) {
             book.get().setOwner(owner.get());
+            book.get().setLendingTime(new Timestamp(System.currentTimeMillis()));
         }
     }
 
@@ -90,6 +94,7 @@ public class BooksService {
         Optional<Book> book = booksRepository.findById(id);
         if (book.isPresent()) {
              book.get().setOwner(null);
+             book.get().setLendingTime(null);
         }
     }
 }
